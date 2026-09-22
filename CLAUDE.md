@@ -310,7 +310,7 @@ CSRF_TRUSTED_ORIGINS=https://*.vercel.app
 - [x] Faz 1 — Proje iskeleti ve kimlik doğrulama
 - [x] Faz 2 — Anket oluşturma, listeleme ve oylama
 - [x] Faz 3 — Arayüz cilası ve etkileşimler
-- [ ] Faz 4 — Supabase bağlantısı ve Vercel deployment
+- [x] Faz 4 — Supabase bağlantısı ve Vercel deployment
 - [ ] Faz 5 — (İleride) İyileştirmeler
 
 ---
