@@ -9,7 +9,7 @@ function renderResults(data) {
         ${r.option_id === data.voted_option_id ? '<span class="check-mark">✓</span>' : ""}
       </div>
       <div class="result-bar-track">
-        <div class="result-bar-fill" style="width: ${r.percent}%"></div>
+        <div class="result-bar-fill" data-percent="${r.percent}"></div>
       </div>
       <div class="result-row-stats">${r.votes} oy · %${r.percent}</div>
     </div>
@@ -25,6 +25,7 @@ function renderResults(data) {
 
   voteSection.replaceWith(resultsBlock);
   resultsBlock.after(meta);
+  animateResultBars(resultsBlock);
 }
 
 if (voteForm) {

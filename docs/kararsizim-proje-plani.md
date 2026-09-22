@@ -309,7 +309,7 @@ CSRF_TRUSTED_ORIGINS=https://*.vercel.app
 ### ✅ Faz durumu (Claude Code her faz bitiminde burayı güncellesin)
 - [x] Faz 1 — Proje iskeleti ve kimlik doğrulama
 - [x] Faz 2 — Anket oluşturma, listeleme ve oylama
-- [ ] Faz 3 — Arayüz cilası ve etkileşimler
+- [x] Faz 3 — Arayüz cilası ve etkileşimler
 - [ ] Faz 4 — Supabase bağlantısı ve Vercel deployment
 - [ ] Faz 5 — (İleride) İyileştirmeler
 

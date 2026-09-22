@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Bir şeyler ters gitti · Kararsızım{% endblock %}
+
+{% block content %}
+<div class="empty-state">
+  <h1>Bir şeyler ters gitti 😵</h1>
+  <p>Sunucuda beklenmedik bir hata oluştu. Birazdan tekrar dener misin?</p>
+  <p><a href="{% url 'poll_list' %}">Anasayfaya dön</a></p>
+</div>
+{% endblock %}

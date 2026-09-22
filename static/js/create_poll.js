@@ -4,13 +4,28 @@ const MAX_OPTIONS = 5;
 const optionList = document.getElementById("option-list");
 const addButton = document.getElementById("add-option");
 
+function wireCharCounter(input, counter) {
+  const update = () => {
+    const max = input.maxLength;
+    const length = input.value.length;
+    counter.textContent = `${length}/${max}`;
+    counter.classList.toggle("char-counter-warning", length >= max * 0.9);
+  };
+  input.addEventListener("input", update);
+  update();
+}
+
 function makeOptionRow(index) {
   const row = document.createElement("div");
   row.className = "option-row";
   row.innerHTML = `
-    <input type="text" name="option" maxlength="100" placeholder="Seçenek ${index}">
-    <button type="button" class="option-remove" aria-label="Seçeneği sil">×</button>
+    <div class="option-row-fields">
+      <input type="text" name="option" maxlength="100" placeholder="Seçenek ${index}">
+      <button type="button" class="option-remove" aria-label="Seçeneği sil">×</button>
+    </div>
+    <span class="char-counter"></span>
   `;
+  wireCharCounter(row.querySelector("input"), row.querySelector(".char-counter"));
   return row;
 }
 
@@ -25,6 +40,10 @@ function updateRowState() {
 }
 
 if (optionList && addButton) {
+  optionList.querySelectorAll(".option-row").forEach((row) => {
+    wireCharCounter(row.querySelector("input"), row.querySelector(".char-counter"));
+  });
+
   addButton.addEventListener("click", () => {
     const count = optionList.querySelectorAll(".option-row").length;
     if (count >= MAX_OPTIONS) return;
@@ -41,4 +60,10 @@ if (optionList && addButton) {
   });
 
   updateRowState();
+}
+
+const questionInput = document.getElementById("id_question");
+const questionCounter = document.querySelector('[data-counter-for="id_question"]');
+if (questionInput && questionCounter) {
+  wireCharCounter(questionInput, questionCounter);
 }

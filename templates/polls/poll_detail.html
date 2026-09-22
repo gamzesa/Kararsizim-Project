@@ -18,7 +18,7 @@
             {% if result.option.id == voted_option_id %}<span class="check-mark">✓</span>{% endif %}
           </div>
           <div class="result-bar-track">
-            <div class="result-bar-fill" style="width: {{ result.percent|stringformat:'0.1f' }}%"></div>
+            <div class="result-bar-fill" data-percent="{{ result.percent|stringformat:'0.1f' }}"></div>
           </div>
           <div class="result-row-stats">{{ result.votes }} oy · %{{ result.percent|stringformat:'0.1f' }}</div>
         </div>
@@ -51,6 +51,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/main.js' %}"></script>
 <script src="{% static 'js/vote.js' %}"></script>
 {% endblock %}

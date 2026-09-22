@@ -14,6 +14,7 @@
     <div class="form-field">
       <label for="{{ form.question.id_for_label }}">Soru</label>
       {{ form.question }}
+      <span class="char-counter" data-counter-for="{{ form.question.id_for_label }}"></span>
       {% if form.question.errors %}<p class="form-errors">{{ form.question.errors|join:" " }}</p>{% endif %}
     </div>
     <div class="form-field">
@@ -28,8 +29,11 @@
       <div id="option-list">
         {% for value in submitted_options %}
           <div class="option-row">
-            <input type="text" name="option" maxlength="100" value="{{ value }}" placeholder="Seçenek {{ forloop.counter }}">
-            <button type="button" class="option-remove" aria-label="Seçeneği sil">×</button>
+            <div class="option-row-fields">
+              <input type="text" name="option" maxlength="100" value="{{ value }}" placeholder="Seçenek {{ forloop.counter }}">
+              <button type="button" class="option-remove" aria-label="Seçeneği sil">×</button>
+            </div>
+            <span class="char-counter"></span>
           </div>
         {% endfor %}
       </div>

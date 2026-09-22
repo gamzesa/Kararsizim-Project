@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError, transaction
-from django.test import TestCase
+from django.template.loader import render_to_string
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from .models import Option, Poll, Vote
@@ -187,3 +188,15 @@ class EmailPrivacyTests(TestCase):
             HTTP_X_REQUESTED_WITH="XMLHttpRequest",
         )
         self.assertNotContains(response, "gizli-eposta@example.com")
+
+
+class ErrorPageTests(TestCase):
+    @override_settings(DEBUG=False, ALLOWED_HOSTS=["testserver"])
+    def test_custom_404_page_used(self):
+        response = self.client.get("/olmayan-bir-sayfa/")
+        self.assertEqual(response.status_code, 404)
+        self.assertContains(response, "kararsız kalıp kayboldu", status_code=404)
+
+    def test_500_template_renders_without_request(self):
+        html = render_to_string("500.html")
+        self.assertIn("Bir şeyler ters gitti", html)
