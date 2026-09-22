@@ -130,6 +130,7 @@ class User(AbstractUser):
 
 ```python
 class Poll(models.Model):
+    public_id = models.CharField(max_length=12, unique=True, editable=False, default=generate_public_id)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="polls")
     question = models.CharField(max_length=200)
     description = models.TextField(max_length=500, blank=True)   # isteğe bağlı açıklama
@@ -161,6 +162,7 @@ class Vote(models.Model):
 
 - Oy sayıları için ayrı bir sayaç alanı tutma; `annotate(Count("votes"))` ile hesapla (prototip için yeterli).
 - `Option` her zaman ait olduğu `Poll` ile doğrulanmalı (başka anketin seçeneğine oy verilemesin).
+- URL'lerde ve tüm dış referanslarda `Poll.pk` (sıralı `id`) **değil**, `public_id` kullanılır — böylece toplam anket sayısı URL'den tahmin edilemez. `public_id`, 12 karakterlik, karışabilecek harfleri (l, 1, I, O, 0) içermeyen bir alfabeden rastgele üretilir (`polls/models.py: generate_public_id`).
 
 ### 5.3 Misafir oylama mantığı
 
@@ -177,10 +179,10 @@ class Vote(models.Model):
 | URL | View | Erişim | Açıklama |
 |---|---|---|---|
 | `/` | `poll_list` | Herkes | Tüm anketler, en yeni en üstte, sayfa başına 20 anket (Django `Paginator`). |
-| `/anket/<id>/` | `poll_detail` | Herkes | Soru, açıklama, yazar kullanıcı adı, seçenekler, oy verme veya sonuçlar. |
-| `/anket/<id>/oy/` | `vote` | Herkes | Yalnızca `POST`. JSON döner (bkz. 6.1). JS kapalıysa normal form POST ile de çalışmalı ve detay sayfasına yönlendirmeli. |
+| `/anket/<public_id>/` | `poll_detail` | Herkes | Soru, açıklama, yazar kullanıcı adı, seçenekler, oy verme veya sonuçlar. |
+| `/anket/<public_id>/oy/` | `vote` | Herkes | Yalnızca `POST`. JSON döner (bkz. 6.1). JS kapalıysa normal form POST ile de çalışmalı ve detay sayfasına yönlendirmeli. |
 | `/anket/olustur/` | `poll_create` | Üye (`@login_required`) | Soru + açıklama + 2–5 seçenek. |
-| `/anket/<id>/sil/` | `poll_delete` | Yalnızca anket sahibi | `POST` ile silme; başkası denerse 403/404. |
+| `/anket/<public_id>/sil/` | `poll_delete` | Yalnızca anket sahibi | `POST` ile silme; başkası denerse 403/404. |
 | `/anketlerim/` | `my_polls` | Üye | Kullanıcının kendi anketleri. |
 | `/kayit/` | `register` | Misafir | Kayıttan sonra otomatik giriş ve anasayfaya yönlendirme. |
 | `/giris/` | `login` | Misafir | E-posta/kullanıcı adı + parola. `next` parametresini destekle. |
@@ -189,7 +191,7 @@ class Vote(models.Model):
 
 ### 6.1 Oy verme endpoint'i (JSON)
 
-İstek: `POST /anket/<id>/oy/` — body: `option_id`, header: `X-CSRFToken`.
+İstek: `POST /anket/<public_id>/oy/` — body: `option_id`, header: `X-CSRFToken`.
 
 Başarılı yanıt:
 ```json
@@ -306,7 +308,7 @@ CSRF_TRUSTED_ORIGINS=https://*.vercel.app
 
 ### ✅ Faz durumu (Claude Code her faz bitiminde burayı güncellesin)
 - [x] Faz 1 — Proje iskeleti ve kimlik doğrulama
-- [ ] Faz 2 — Anket oluşturma, listeleme ve oylama
+- [x] Faz 2 — Anket oluşturma, listeleme ve oylama
 - [ ] Faz 3 — Arayüz cilası ve etkileşimler
 - [ ] Faz 4 — Supabase bağlantısı ve Vercel deployment
 - [ ] Faz 5 — (İleride) İyileştirmeler

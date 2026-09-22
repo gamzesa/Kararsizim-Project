@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ poll.question }} · Kararsızım{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="poll-card-meta">@{{ poll.author.username }} · {{ poll.created_at|timesince }} önce</div>
+  <h1>{{ poll.question }}</h1>
+  {% if poll.description %}<p>{{ poll.description }}</p>{% endif %}
+
+  {% if show_results %}
+    <div class="results" data-poll-id="{{ poll.public_id }}">
+      {% for result in results %}
+        <div class="result-row {% if result.option.id == voted_option_id %}result-row-voted{% endif %}">
+          <div class="result-row-label">
+            {{ result.option.text }}
+            {% if result.option.id == voted_option_id %}<span class="check-mark">✓</span>{% endif %}
+          </div>
+          <div class="result-bar-track">
+            <div class="result-bar-fill" style="width: {{ result.percent|stringformat:'0.1f' }}%"></div>
+          </div>
+          <div class="result-row-stats">{{ result.votes }} oy · %{{ result.percent|stringformat:'0.1f' }}</div>
+        </div>
+      {% endfor %}
+    </div>
+    <p class="poll-card-meta">Toplam {{ total_votes }} oy</p>
+  {% else %}
+    <div class="vote-section">
+      <form method="post" action="{% url 'vote' poll.public_id %}" class="vote-form" data-poll-id="{{ poll.public_id }}">
+        {% csrf_token %}
+        <div class="vote-options">
+          {% for option in options %}
+            <button type="submit" name="option_id" value="{{ option.id }}" class="vote-option-btn">
+              {{ option.text }}
+            </button>
+          {% endfor %}
+        </div>
+      </form>
+      <p class="poll-card-meta">Toplam {{ total_votes }} oy</p>
+    </div>
+  {% endif %}
+
+  {% if is_owner %}
+    <form method="post" action="{% url 'poll_delete' poll.public_id %}" class="delete-form" data-confirm="Bu anketi silmek istediğine emin misin?">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-secondary">Anketi Sil</button>
+    </form>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/vote.js' %}"></script>
+{% endblock %}

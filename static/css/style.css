@@ -153,6 +153,169 @@ a {
   padding: 48px 16px;
 }
 
+/* Anket kartları */
+
+.poll-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.poll-card {
+  display: block;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.poll-card-meta {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin: 0 0 8px;
+}
+
+.poll-card-question {
+  margin: 0 0 12px;
+}
+
+.poll-card-badges {
+  display: flex;
+  gap: 8px;
+}
+
+.badge {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* Oylama */
+
+.vote-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vote-option-btn {
+  min-height: 48px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.vote-option-btn:hover {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.vote-option-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Sonuçlar */
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.result-row-label {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.check-mark {
+  color: var(--mint);
+  margin-left: 4px;
+}
+
+.result-bar-track {
+  background: var(--border);
+  border-radius: 999px;
+  height: 12px;
+  overflow: hidden;
+}
+
+.result-bar-fill {
+  background: var(--primary);
+  height: 100%;
+  border-radius: 999px;
+}
+
+.result-row-voted .result-bar-fill {
+  background: var(--mint);
+}
+
+.result-row-stats {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.delete-form {
+  margin-top: 20px;
+}
+
+/* Anket oluşturma formu */
+
+.option-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.option-row input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.option-remove {
+  border: none;
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-radius: 12px;
+  width: 48px;
+  min-height: 48px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+#add-option {
+  margin-top: 4px;
+}
+
+#add-option:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;

@@ -12,8 +12,8 @@
     <a class="logo" href="{% url 'poll_list' %}">Kararsızım 🤔</a>
     <nav>
       {% if user.is_authenticated %}
-        <a class="btn btn-primary" href="#">Anket Oluştur</a>
-        <a href="#">Anketlerim</a>
+        <a class="btn btn-primary" href="{% url 'poll_create' %}">Anket Oluştur</a>
+        <a href="{% url 'my_polls' %}">Anketlerim</a>
         <span>{{ user.username }}</span>
         <form method="post" action="{% url 'logout' %}" style="display:inline">
           {% csrf_token %}
@@ -37,5 +37,7 @@
   <main class="container">
     {% block content %}{% endblock %}
   </main>
+
+  {% block extra_js %}{% endblock %}
 </body>
 </html>

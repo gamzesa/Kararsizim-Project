@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Anket Oluştur · Kararsızım{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1>Anket Oluştur</h1>
+  <form method="post" id="poll-create-form">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="form-errors">{{ form.non_field_errors }}</div>
+    {% endif %}
+    <div class="form-field">
+      <label for="{{ form.question.id_for_label }}">Soru</label>
+      {{ form.question }}
+      {% if form.question.errors %}<p class="form-errors">{{ form.question.errors|join:" " }}</p>{% endif %}
+    </div>
+    <div class="form-field">
+      <label for="{{ form.description.id_for_label }}">Açıklama (isteğe bağlı)</label>
+      {{ form.description }}
+      {% if form.description.errors %}<p class="form-errors">{{ form.description.errors|join:" " }}</p>{% endif %}
+    </div>
+
+    <div class="form-field">
+      <label>Seçenekler</label>
+      {% if option_error %}<p class="form-errors">{{ option_error }}</p>{% endif %}
+      <div id="option-list">
+        {% for value in submitted_options %}
+          <div class="option-row">
+            <input type="text" name="option" maxlength="100" value="{{ value }}" placeholder="Seçenek {{ forloop.counter }}">
+            <button type="button" class="option-remove" aria-label="Seçeneği sil">×</button>
+          </div>
+        {% endfor %}
+      </div>
+      <button type="button" id="add-option" class="btn btn-secondary">+ Seçenek ekle</button>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Anketi Yayınla</button>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/create_poll.js' %}"></script>
+{% endblock %}

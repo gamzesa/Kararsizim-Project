@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Anketlerim · Kararsızım{% endblock %}
+
+{% block content %}
+<h1>Anketlerim</h1>
+{% if polls %}
+  <div class="poll-grid">
+    {% for poll in polls %}
+      {% include "polls/_poll_card.html" %}
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty-state">
+    <h2>Henüz anket oluşturmadın</h2>
+    <p><a href="{% url 'poll_create' %}">İlk anketini oluştur!</a></p>
+  </div>
+{% endif %}
+{% endblock %}

@@ -3,8 +3,28 @@
 {% block title %}Kararsızım{% endblock %}
 
 {% block content %}
-<div class="empty-state">
-  <h2>Henüz kimse kararsız değil gibi… 🤔</h2>
-  <p>Anket listesi Faz 2'de burada olacak.</p>
-</div>
+{% if page_obj.object_list %}
+  <div class="poll-grid">
+    {% for poll in page_obj %}
+      {% include "polls/_poll_card.html" %}
+    {% endfor %}
+  </div>
+
+  {% if page_obj.paginator.num_pages > 1 %}
+    <nav class="pagination">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">&laquo; Önceki</a>
+      {% endif %}
+      <span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Sonraki &raquo;</a>
+      {% endif %}
+    </nav>
+  {% endif %}
+{% else %}
+  <div class="empty-state">
+    <h2>Henüz kimse kararsız değil gibi… 🤔</h2>
+    <p>İlk anketi sen oluştur!</p>
+  </div>
+{% endif %}
 {% endblock %}
