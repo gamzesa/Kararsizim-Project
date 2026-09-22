@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Kayıt Ol · Kararsızım{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1>Kayıt Ol</h1>
+  <form method="post">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="form-errors">{{ form.non_field_errors }}</div>
+    {% endif %}
+    <div class="form-field">
+      <label for="{{ form.username.id_for_label }}">Kullanıcı adı</label>
+      {{ form.username }}
+      {% if form.username.errors %}<p class="form-errors">{{ form.username.errors|join:" " }}</p>{% endif %}
+    </div>
+    <div class="form-field">
+      <label for="{{ form.email.id_for_label }}">E-posta</label>
+      {{ form.email }}
+      {% if form.email.errors %}<p class="form-errors">{{ form.email.errors|join:" " }}</p>{% endif %}
+    </div>
+    <div class="form-field">
+      <label for="{{ form.password.id_for_label }}">Parola</label>
+      {{ form.password }}
+      {% if form.password.errors %}<p class="form-errors">{{ form.password.errors|join:" " }}</p>{% endif %}
+    </div>
+    <div class="form-field">
+      <label for="{{ form.password_confirm.id_for_label }}">Parola (tekrar)</label>
+      {{ form.password_confirm }}
+      {% if form.password_confirm.errors %}<p class="form-errors">{{ form.password_confirm.errors|join:" " }}</p>{% endif %}
+    </div>
+    <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+  </form>
+  <p>Zaten hesabın var mı? <a href="{% url 'login' %}">Giriş yap</a></p>
+</div>
+{% endblock %}

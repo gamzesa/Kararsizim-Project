@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Kararsızım{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <header class="header">
+    <a class="logo" href="{% url 'poll_list' %}">Kararsızım 🤔</a>
+    <nav>
+      {% if user.is_authenticated %}
+        <a class="btn btn-primary" href="#">Anket Oluştur</a>
+        <a href="#">Anketlerim</a>
+        <span>{{ user.username }}</span>
+        <form method="post" action="{% url 'logout' %}" style="display:inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-secondary">Çıkış</button>
+        </form>
+      {% else %}
+        <a class="btn btn-secondary" href="{% url 'login' %}">Giriş Yap</a>
+        <a class="btn btn-primary" href="{% url 'register' %}">Kayıt Ol</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

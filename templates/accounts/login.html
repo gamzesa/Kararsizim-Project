@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Giriş Yap · Kararsızım{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1>Giriş Yap</h1>
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}">
+    {% if form.non_field_errors %}
+      <div class="form-errors">{{ form.non_field_errors }}</div>
+    {% endif %}
+    <div class="form-field">
+      <label for="{{ form.identifier.id_for_label }}">E-posta veya kullanıcı adı</label>
+      {{ form.identifier }}
+      {% if form.identifier.errors %}<p class="form-errors">{{ form.identifier.errors|join:" " }}</p>{% endif %}
+    </div>
+    <div class="form-field">
+      <label for="{{ form.password.id_for_label }}">Parola</label>
+      {{ form.password }}
+      {% if form.password.errors %}<p class="form-errors">{{ form.password.errors|join:" " }}</p>{% endif %}
+    </div>
+    <button type="submit" class="btn btn-primary">Giriş Yap</button>
+  </form>
+  <p>Hesabın yok mu? <a href="{% url 'register' %}">Kayıt ol</a></p>
+</div>
+{% endblock %}
